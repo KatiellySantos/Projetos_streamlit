@@ -337,7 +337,8 @@ with tab1:
             "</h5>",
             unsafe_allow_html=True
         )
-        with open("mapa.geojson", "r", encoding="utf-8") as f:
+        geojson_path = os.path.join(BASE_DIR, "mapa.json")
+        with open(geojson_path, "r", encoding="utf-8") as f:
             geojson_mapa = json.load(f)
         df_filtrado["codigo_ibge"] = df_filtrado["codigo_ibge"].astype(str)
         df_filtrado["Visitas_hover"] = df_filtrado["Visitas"].apply(
@@ -408,7 +409,8 @@ with tab2:
             "</h5>",
             unsafe_allow_html=True
         )
-        with open("mapa.geojson", "r", encoding="utf-8") as f:
+        geojson_path = os.path.join(BASE_DIR, "mapa.json")
+        with open(geojson_path, "r", encoding="utf-8") as f: 
             geojson_mapa = json.load(f)
         df_filtrado["codigo_ibge"] = df_filtrado["codigo_ibge"].astype(str)
         df_filtrado["Arrecadacao_hover"] = df_filtrado["Arrecadação"].apply(
