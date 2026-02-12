@@ -458,10 +458,10 @@ with tab3:
         story = []  # story definido aqui, dentro do if
 
         # ----- TÍTULO PDF -----
-        ibge_path = os.path.join(BASE_DIR, "IBGE.PNG")
-        logo = Image(ibge_path, width=60, height=60)
-        story.append(logo)
-        story.append(Spacer(1, 1))
+        #ibge_path = os.path.join(BASE_DIR, "IBGE.PNG")
+        #logo = Image(ibge_path, width=60, height=60)
+        #story.append(logo)
+        #story.append(Spacer(1, 1))
 
         story.append(Paragraph(
             "<b>Painel de Desenvolvimento Econômico e Turístico</b>",
@@ -622,17 +622,17 @@ Este relatório apresenta gráficos e análises detalhadas para apoiar decisões
                          texto_arr, markdown_arrecadacao)
 
         # ----- Logo e assinatura -----
-        logo_path = os.path.join(BASE_DIR, "logo.png")
-        logo_final = Image(logo_path, width=60, height=60)
-        assinatura = Table([[ '', logo_final ]], colWidths=[400, 60])
-        assinatura.setStyle(TableStyle([
-            ('VALIGN', (0, 0), (-1, -1), 'BOTTOM'),
-            ('ALIGN', (1, 0), (1, 0), 'RIGHT'),
-            ('ALIGN', (0, 0), (0, 0), 'LEFT')
-        ]))
-        story.append(Spacer(1, 20))
-        story.append(assinatura)
-        story.append(Spacer(1, 20))
+        #logo_path = os.path.join(BASE_DIR, "logo.png")
+        #logo_final = Image(logo_path, width=60, height=60)
+        #assinatura = Table([[ '', logo_final ]], colWidths=[400, 60])
+        #assinatura.setStyle(TableStyle([
+         #   ('VALIGN', (0, 0), (-1, -1), 'BOTTOM'),
+          #  ('ALIGN', (1, 0), (1, 0), 'RIGHT'),
+           # ('ALIGN', (0, 0), (0, 0), 'LEFT')
+       # ]))
+       # story.append(Spacer(1, 20))
+        #story.append(assinatura)
+        #story.append(Spacer(1, 20))
 
         # ----- Gerar PDF -----
         tmp_pdf = tempfile.NamedTemporaryFile(delete=False, suffix=".pdf")
