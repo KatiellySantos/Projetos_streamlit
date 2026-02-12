@@ -11,9 +11,14 @@ import json
 from datetime import datetime
 import tempfile
 import os
+import matplotlib
+    matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+import tempfile
 
 # reportlab para montar PDF
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image, Table, TableStyle
+from reportlab.platypus import Image as RLImage
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import inch
@@ -592,32 +597,20 @@ Este relatório apresenta gráficos e análises detalhadas para apoiar decisões
         # ----- Função para salvar gráfico e inserir markdown -----
         def salvar_e_inserir(fig, titulo, descricao, markdown_dinamico=None, df=None, coluna_x=None, coluna_y=None):
             from reportlab.platypus import Image as RLImage
+            import matplotlib
+            matplotlib.use('Agg')
             import matplotlib.pyplot as plt
             import tempfile
 
             story.append(Paragraph(f"<b>{titulo}</b>", titulo_menor))
 
-            try:
-                tmp = tempfile.NamedTemporaryFile(delete=False, suffix=".png")
-                png_bytes = fig.to_image(format="png")
-                with open(tmp.name, "wb") as f:
-                    f.write(png_bytes)
-                story.append(RLImage(tmp.name, width=5*inch, height=3.5*inch))
-            except:
-                if df is not None and coluna_x and coluna_y:
-                    tmp = tempfile.NamedTemporaryFile(delete=False, suffix=".png")
-                    plt.figure(figsize=(6,4))
-                    df_plot = df.groupby(coluna_x, as_index=False)[coluna_y].sum()
-                    plt.bar(df_plot[coluna_x], df_plot[coluna_y])
-                    plt.title(titulo)
-                    plt.xticks(rotation=45)
-                    plt.tight_layout()
-                    plt.savefig(tmp.name, bbox_inches="tight")
-                    plt.close()
-                    story.append(RLImage(tmp.name, width=5*inch, height=3.5*inch))
-                else:
-                   story.append(Paragraph("Não foi possível gerar gráfico.", styles["Normal"]))
-            story.append(Spacer(1, 1))
+            
+            tmp = tempfile.NamedTemporaryFile(delete=False, suffix=".png")
+            png_bytes = fig.to_image(format="png")
+            with open(tmp.name, "wb") as f:
+                f.write(png_bytes)
+            story.append(RLImage(tmp.name, width=5*inch, height=3.5*inch))
+       
 
             if descricao:
                 story.append(Paragraph(descricao, styles["Normal"]))
