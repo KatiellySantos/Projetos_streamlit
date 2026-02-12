@@ -30,7 +30,10 @@ st.set_page_config(
 )
 
 # ---------- LEITURA DO ARQUIVO ----------
-df = pd.read_excel("planilha.xlsx")
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+arquivo = os.path.join(BASE_DIR, "planilha.xlsx")
+
+df = pd.read_excel(arquivo)
 
 # ---------- TÍTULO (HTML/CSS) ----------
 st.markdown("""
