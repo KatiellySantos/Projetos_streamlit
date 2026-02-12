@@ -336,8 +336,17 @@ with tab1:
             "</h5>",
             unsafe_allow_html=True
         )
-        with open("mapa.geojson", "r", encoding="utf-8") as f:
-            geojson_mapa = json.load(f)
+        # Caminho absoluto para o arquivo geojson
+        geojson_path = os.path.join(BASE_DIR, "mapa.geojson")
+        
+        # Abrir o arquivo com tratamento de erro
+        try:
+            with open(geojson_path, "r", encoding="utf-8") as f:
+                geojson_mapa = json.load(f)
+        except FileNotFoundError:
+            st.error(f"Arquivo 'mapa.geojson' não encontrado em: {geojson_path}")
+            st.stop()  # Para a execução do app se o arquivo não existir
+        
         df_filtrado["codigo_ibge"] = df_filtrado["codigo_ibge"].astype(str)
         df_filtrado["Visitas_hover"] = df_filtrado["Visitas"].apply(
             lambda x: f" {x:,.0f}".replace(",", ".") if pd.notna(x) else "0"
