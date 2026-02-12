@@ -458,7 +458,8 @@ with tab3:
         story = []  # story definido aqui, dentro do if
 
         # ----- TÍTULO PDF -----
-        logo = Image("IBGE.PNG", width=60, height=60)
+        ibge_path = os.path.join(BASE_DIR, "IBGE.PNG")
+        logo = Image(ibge_path, width=60, height=60)
         story.append(logo)
         story.append(Spacer(1, 1))
 
@@ -621,7 +622,8 @@ Este relatório apresenta gráficos e análises detalhadas para apoiar decisões
                          texto_arr, markdown_arrecadacao)
 
         # ----- Logo e assinatura -----
-        logo_final = Image("logo.png", width=60, height=60)
+        logo_path = os.path.join(BASE_DIR, "logo.png")
+        logo_final = Image(logo_path, width=60, height=60)
         assinatura = Table([[ '', logo_final ]], colWidths=[400, 60])
         assinatura.setStyle(TableStyle([
             ('VALIGN', (0, 0), (-1, -1), 'BOTTOM'),
