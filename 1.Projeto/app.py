@@ -24,6 +24,10 @@ from reportlab.lib import colors
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib.enums import TA_RIGHT
 
+import plotly.io as pio
+pio.kaleido.scope.default_format = "png"
+
+
 # ---------- CONFIG PAGE ----------
 st.set_page_config(
     page_title="Painel Econômico e Turístico",
