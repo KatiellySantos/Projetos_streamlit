@@ -538,7 +538,7 @@ fluxo de visitantes e arrecadação turística.
                 ["Visitas Nacionais","Visitas Internacionais"]
             ].sum()
 
-            fig, ax = plt.subplots(figsize=(8,4))
+            fig, ax = plt.subplots(figsize=(6,4))
             x = range(len(df_uf))
 
             ax.bar(x, df_uf["Visitas Nacionais"], width=0.4, label="Nacionais")
@@ -559,7 +559,7 @@ fluxo de visitantes e arrecadação turística.
         def grafico_linha(df, coluna, titulo):
             df_uf = df.groupby("Estado", as_index=False)[coluna].sum()
 
-            fig, ax = plt.subplots(figsize=(8,4))
+            fig, ax = plt.subplots(figsize=(6,4))
             ax.plot(df_uf["Estado"], df_uf[coluna])
             ax.set_title(titulo)
             plt.xticks(rotation=45)
