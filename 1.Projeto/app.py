@@ -610,7 +610,10 @@ fluxo de visitantes e arrecadação turística.
             story.append(Spacer(1, 10))
 
             # Tamanho fixo controlado aqui
-            img = Image(caminho_img, width=80, height=80)
+            from reportlab.lib.units import inch
+
+            img = Image(caminho_img)
+            img._restrictSize(3*inch, 1.5*inch)
             story.append(img)
 
             os.unlink(caminho_img)
