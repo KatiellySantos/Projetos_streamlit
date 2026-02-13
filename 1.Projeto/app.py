@@ -568,6 +568,7 @@ fluxo de visitantes e arrecadação turística.
             df_uf = df.groupby("Estado", as_index=False)[coluna].sum()
 
             fig, ax = plt.subplots(figsize=(4,2))
+            plt.savefig(tmp.name, dpi=90)
             ax.plot(df_uf["Estado"], df_uf[coluna], marker="o")
             ax.set_title(titulo)
             plt.xticks(rotation=45)
