@@ -612,11 +612,16 @@ fluxo de visitantes e arrecadação turística.
             # Tamanho fixo controlado aqui
             from reportlab.lib.units import inch
 
-            img = Image(caminho_img)
-            img._restrictSize(3*inch, 1.5*inch)
-            story.append(img)
+            from reportlab.platypus import Table
 
-            os.unlink(caminho_img)
+            img = Image(caminho_img, width=120, height=60)
+
+            tabela_img = Table([[img]], colWidths=[150])
+            story.append(tabela_img)
+
+     
+
+           # os.unlink(caminho_img)
 
             story.append(Spacer(1, 12))
             story.append(Paragraph(texto_base, styles["Normal"]))
