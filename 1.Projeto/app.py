@@ -461,7 +461,7 @@ with tab2:
 # ------------------------------------------------------------
 
 # ------------------------------------------------------------
-# TAB 3 — RELATÓRIO PDF COMPLETO (SEM KALEIDO)
+# TAB 3 — RELATÓRIO PDF COMPLETO
 # ------------------------------------------------------------
 with tab3:
     st.subheader("Gerar Relatório")
@@ -508,7 +508,7 @@ fluxo de visitantes e arrecadação turística.
         texto_vis = "Os dados evidenciam o volume de visitas nacionais e internacionais registradas."
         texto_arr = "Os valores apresentados demonstram o comportamento da arrecadação turística nos estados."
 
-        # ---------------- FUNÇÕES DE TEXTO DINÂMICO ----------------
+        # ---------------- FUNÇÃO TEXTO DINÂMICO ----------------
         def texto_dinamico(df, coluna, prefixo):
             df_uf = df.groupby("Estado", as_index=False)[coluna].sum()
             linhas = []
@@ -518,64 +518,72 @@ fluxo de visitantes e arrecadação turística.
             return linhas
 
         # ---------------- FUNÇÕES DE GRÁFICOS ----------------
+
+        # Barras horizontais
         def grafico_barra(df, coluna, titulo):
             df_uf = df.groupby("Estado", as_index=False)[coluna].sum()
+            df_uf = df_uf.sort_values(coluna, ascending=True)
 
-            fig, ax = plt.subplots(figsize=(6,4))
-            ax.bar(df_uf["Estado"], df_uf[coluna])
+            fig, ax = plt.subplots(figsize=(6,3))
+            ax.barh(df_uf["Estado"], df_uf[coluna])
             ax.set_title(titulo)
-            plt.xticks(rotation=45)
+            ax.invert_yaxis()
 
             tmp = tempfile.NamedTemporaryFile(delete=False, suffix=".png")
             plt.tight_layout()
-            plt.savefig(tmp.name)
+            plt.savefig(tmp.name, dpi=120)
             plt.close(fig)
 
             return tmp.name
 
+        # Comparação visitas
         def grafico_visitas(df, titulo):
             df_uf = df.groupby("Estado", as_index=False)[
-                ["Visitas Nacionais","Visitas Internacionais"]
+                ["Visitas Nacionais", "Visitas Internacionais"]
             ].sum()
 
-            fig, ax = plt.subplots(figsize=(6,4))
+            fig, ax = plt.subplots(figsize=(6,3))
             x = range(len(df_uf))
 
             ax.bar(x, df_uf["Visitas Nacionais"], width=0.4, label="Nacionais")
-            ax.bar([i+0.4 for i in x], df_uf["Visitas Internacionais"], width=0.4, label="Internacionais")
+            ax.bar([i + 0.4 for i in x],
+                   df_uf["Visitas Internacionais"],
+                   width=0.4,
+                   label="Internacionais")
 
-            ax.set_xticks([i+0.2 for i in x])
+            ax.set_xticks([i + 0.2 for i in x])
             ax.set_xticklabels(df_uf["Estado"], rotation=45)
             ax.legend()
             ax.set_title(titulo)
 
             tmp = tempfile.NamedTemporaryFile(delete=False, suffix=".png")
             plt.tight_layout()
-            plt.savefig(tmp.name)
+            plt.savefig(tmp.name, dpi=120)
             plt.close(fig)
 
             return tmp.name
 
+        # Linha arrecadação
         def grafico_linha(df, coluna, titulo):
             df_uf = df.groupby("Estado", as_index=False)[coluna].sum()
 
-            fig, ax = plt.subplots(figsize=(1,1))
-            ax.plot(df_uf["Estado"], df_uf[coluna])
+            fig, ax = plt.subplots(figsize=(6,3))
+            ax.plot(df_uf["Estado"], df_uf[coluna], marker="o")
             ax.set_title(titulo)
             plt.xticks(rotation=45)
 
             tmp = tempfile.NamedTemporaryFile(delete=False, suffix=".png")
             plt.tight_layout()
-            plt.savefig(tmp.name)
+            plt.savefig(tmp.name, dpi=120)
             plt.close(fig)
 
             return tmp.name
 
-        # ---------------- SEÇÕES DO RELATÓRIO ----------------
+        # ---------------- SEÇÕES ----------------
         secoes = [
             ("Quantidade de empregos por Estado",
              texto_emp,
-             grafico_barra(df_filtrado, "Empregos", ""),
+             grafico_barra(df_filtrado, "Empregos", "Quantidade de empregos por Estado"),
              texto_dinamico(df_filtrado, "Empregos", "O estado de")),
 
             ("Quantidade de estabelecimentos turísticos por Estado",
@@ -594,20 +602,20 @@ fluxo de visitantes e arrecadação turística.
              texto_dinamico(df_filtrado, "Arrecadação", "A arrecadação em"))
         ]
 
+        # ---------------- MONTAGEM DO PDF ----------------
         for titulo, texto_base, caminho_img, linhas_dinamicas in secoes:
 
-            story.append(Spacer(1, 18))
+            story.append(Spacer(1, 20))
             story.append(Paragraph(f"<b>{titulo}</b>", styles["Heading2"]))
-            story.append(Spacer(1, 8))
+            story.append(Spacer(1, 10))
 
-            img = Image(caminho_img)
-            img.drawWidth = 3 * inch
-            img.drawHeight = img.imageHeight * 3 * inch / img.imageWidth
+            # Tamanho fixo controlado aqui
+            img = Image(caminho_img, width=450, height=260)
             story.append(img)
 
             os.unlink(caminho_img)
 
-            story.append(Spacer(1, 10))
+            story.append(Spacer(1, 12))
             story.append(Paragraph(texto_base, styles["Normal"]))
             story.append(Spacer(1, 6))
 
