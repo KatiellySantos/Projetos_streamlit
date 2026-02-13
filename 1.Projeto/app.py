@@ -521,7 +521,7 @@ fluxo de visitantes e arrecadação turística.
         def grafico_barra(df, coluna, titulo):
             df_uf = df.groupby("Estado", as_index=False)[coluna].sum()
 
-            fig, ax = plt.subplots(figsize=(4,2))
+            fig, ax = plt.subplots(figsize=(6,4))
             ax.bar(df_uf["Estado"], df_uf[coluna])
             ax.set_title(titulo)
             plt.xticks(rotation=45)
