@@ -458,25 +458,25 @@ with tab2:
 # ------------------------------------------------------------
 # TAB 3 — RELATÓRIO PDF
 # ------------------------------------------------------------
+
+
 with tab3:
     st.subheader("Gerar Relatório")
     gerar = st.button("📄 Gerar Relatório em PDF")
 
     if gerar:
         msg = st.info("⏳ Gerando relatório, por favor aguarde...")
-        try:
-            pio.kaleido.scope.default_format = "png"
-        except:
-            pass
+        
+        import plotly.io as pio
+        # Configurações do Kaleido
+        pio.kaleido.scope.default_format = "png"
+        pio.kaleido.scope.default_width = 800
+        pio.kaleido.scope.default_height = 600
 
         styles = getSampleStyleSheet()
-        story = []  # story definido aqui, dentro do if
+        story = []
 
         # ----- TÍTULO PDF -----
-     #   logo = Image("IBGE.PNG", width=60, height=60)
-     #   story.append(logo)
-     #   story.append(Spacer(1, 1))
-
         story.append(Paragraph(
             "<b>Painel de Desenvolvimento Econômico e Turístico</b>",
             styles["Title"]
@@ -489,10 +489,7 @@ with tab3:
             fontSize=8,
             alignment=TA_RIGHT
         ))
-
-        story.append(Paragraph(
-            f"Gerado em: {data_formatada}", styles["DataDireita"]
-        ))
+        story.append(Paragraph(f"Gerado em: {data_formatada}", styles["DataDireita"]))
         story.append(Spacer(1, 12))
 
         # ----- TEXTO DE INTRODUÇÃO -----
@@ -545,78 +542,31 @@ Este relatório apresenta gráficos e análises detalhadas para apoiar decisões
             "SP": "São Paulo", "SE": "Sergipe", "TO": "Tocantins"
         }
 
-        # ----- Funções para gerar markdowns -----
-        def gerar_markdown_empregos(df):
-            df_uf = df.groupby("Estado", as_index=False)["Empregos"].sum()
-            markdown = ""
-            for _, row in df_uf.iterrows():
-                sigla = row["Estado"]
-                estado = sigla_para_estado.get(sigla, sigla)
-                empregos = f"{int(row['Empregos']):,}".replace(",", ".")
-                markdown += f"Em **{estado}** foram gerados cerca de **{empregos} empregos**.\n"
-            return markdown
-
-        def gerar_markdown_estabelecimentos(df):
-            df_uf = df.groupby("Estado", as_index=False)["Estabelecimentos"].sum()
-            markdown = ""
-            for _, row in df_uf.iterrows():
-                sigla = row["Estado"]
-                estado = sigla_para_estado.get(sigla, sigla)
-                estabe = f"{int(row['Estabelecimentos']):,}".replace(",", ".")
-                markdown += f"Em {estado}, contabilizam-se aproximadamente {estabe} estabelecimentos turísticos.\n"
-            return markdown
-
-        def gerar_markdown_visitas(df):
-            df_visitas = df.groupby("Estado", as_index=False)[
-                ["Visitas Nacionais", "Visitas Internacionais"]
-            ].sum()
-            markdown = ""
-            for _, row in df_visitas.iterrows():
-                sigla = row["Estado"]
-                estado = sigla_para_estado.get(sigla, sigla)
-                nac = f"{int(row['Visitas Nacionais']):,}".replace(",", ".")
-                intl = f"{int(row['Visitas Internacionais']):,}".replace(",", ".")
-                markdown += f"Em {estado}, contabilizaram-se {nac} visitas nacionais e {intl} visitas internacionais.\n"
-            return markdown
-
-        def gerar_markdown_arrecadacao(df):
-            df_arrec = df.groupby("Estado", as_index=False)["Arrecadação"].sum()
-            markdown = ""
-            for _, row in df_arrec.iterrows():
-                sigla = row["Estado"]
-                estado = sigla_para_estado.get(sigla, sigla)
-                valor = f"R$ {row['Arrecadação']:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
-                markdown += f"No estado de {estado}, a arrecadação foi de aproximadamente {valor}.\n"
-            return markdown
-
-        # ----- Gerar markdowns -----
-        markdown_empregos = gerar_markdown_empregos(df_filtrado)
-        markdown_estabelecimentos = gerar_markdown_estabelecimentos(df_filtrado)
-        markdown_visitas = gerar_markdown_visitas(df_filtrado)
-        markdown_arrecadacao = gerar_markdown_arrecadacao(df_filtrado)
-
-        titulo_menor = ParagraphStyle(
-            name="TituloMenor",
-            fontSize=14,
-            leading=16,
-            textColor=colors.black,
-            spaceAfter=10
-        )
-
         # ----- Função para salvar gráfico e inserir markdown -----
         def salvar_e_inserir(fig, titulo, descricao, markdown_dinamico=None):
-            story.append(Paragraph(f"<b>{titulo}</b>", titulo_menor))
+            story.append(Paragraph(f"<b>{titulo}</b>", ParagraphStyle(
+                name="TituloMenor", fontSize=14, leading=16, textColor=colors.black, spaceAfter=10
+            )))
             try:
                 tmp = tempfile.NamedTemporaryFile(delete=False, suffix=".png")
                 fig.write_image(tmp.name, scale=2)
-                story.append(Image(tmp.name, width=5*inch, height=3.5*inch))
-                story.append(Spacer(1, 1))
+
+                img = Image(tmp.name)
+                img.drawWidth = 5*inch
+                img.drawHeight = img.imageHeight * 5*inch / img.imageWidth
+                story.append(img)
+                story.append(Spacer(1, 12))
+
+                # Limpar arquivo temporário
+                tmp.close()
+                os.unlink(tmp.name)
+
             except Exception as e:
                 story.append(Paragraph(f"Erro ao salvar gráfico: {e}", styles["Normal"]))
 
             if descricao:
                 story.append(Paragraph(descricao, styles["Normal"]))
-                story.append(Spacer(1, 1))
+                story.append(Spacer(1, 12))
 
             if markdown_dinamico:
                 for linha in markdown_dinamico.split("\n"):
@@ -626,26 +576,10 @@ Este relatório apresenta gráficos e análises detalhadas para apoiar decisões
                 story.append(Spacer(1, 14))
 
         # ----- Inserir gráficos + markdowns -----
-        salvar_e_inserir(fig_barras, "Quantidade de empregos por Estado",
-                         texto_emp, markdown_empregos)
-        salvar_e_inserir(fig_barras_02, "Quantidade de estabelecimentos turísticos por Estado",
-                         texto_est, markdown_estabelecimentos)
-        salvar_e_inserir(fig_barrasVisitas, "Comparação entre visitas nacionais e internacionais",
-                         texto_vis, markdown_visitas)
-        salvar_e_inserir(fig_linhas, "Evolução da arrecadação turística",
-                         texto_arr, markdown_arrecadacao)
-
-        # ----- Logo e assinatura -----
-        #logo_final = Image("logo.png", width=60, height=60)
-        #assinatura = Table([[ '', logo_final ]], colWidths=[400, 60])
-        #assinatura.setStyle(TableStyle([
-            #('VALIGN', (0, 0), (-1, -1), 'BOTTOM'),
-            #('ALIGN', (1, 0), (1, 0), 'RIGHT'),
-            #('ALIGN', (0, 0), (0, 0), 'LEFT')
-        #]))
-        #story.append(Spacer(1, 20))
-        #story.append(assinatura)
-        #story.append(Spacer(1, 20))
+        salvar_e_inserir(fig_barras, "Quantidade de empregos por Estado", texto_emp, markdown_empregos)
+        salvar_e_inserir(fig_barras_02, "Quantidade de estabelecimentos turísticos por Estado", texto_est, markdown_estabelecimentos)
+        salvar_e_inserir(fig_barrasVisitas, "Comparação entre visitas nacionais e internacionais", texto_vis, markdown_visitas)
+        salvar_e_inserir(fig_linhas, "Evolução da arrecadação turística", texto_arr, markdown_arrecadacao)
 
         # ----- Gerar PDF -----
         tmp_pdf = tempfile.NamedTemporaryFile(delete=False, suffix=".pdf")
@@ -662,6 +596,14 @@ Este relatório apresenta gráficos e análises detalhadas para apoiar decisões
             file_name=f"relatorio_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf",
             mime="application/pdf"
         )
+
+
+
+
+
+
+
+
 
 # ------------------------------------------------------------
 # Estilo do Dashboard
