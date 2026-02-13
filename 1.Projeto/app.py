@@ -473,10 +473,13 @@ with tab3:
         story = []  # story definido aqui, dentro do if
 
         # ----- TÍTULO PDF -----
-     #   logo = Image("IBGE.PNG", width=60, height=60)
-     #   story.append(logo)
-     #   story.append(Spacer(1, 1))
+        ibge_path = os.path.join(BASE_DIR, "IBGE.PNG")
+        if os.path.exists(ibge_path):
+            logo = Image(ibge_path, width=60, height=60)
+            story.append(logo)
+            story.append(Spacer(1, 6))
 
+          
         story.append(Paragraph(
             "<b>Painel de Desenvolvimento Econômico e Turístico</b>",
             styles["Title"]
