@@ -474,7 +474,7 @@ with tab3:
 
         # ----- TÍTULO PDF -----
         
-        ibge_path = os.path.join(BASE_DIR, "IBGE.PNG")
+        ibge_path = os.path.join(BASE_DIR, "IBGE.png")
         if os.path.exists(ibge_path):
             logo = Image(ibge_path, width=60, height=60)
             story.append(logo)
