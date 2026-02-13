@@ -478,6 +478,7 @@ with tab3:
         import tempfile
 
         # --- Configurações Kaleido ---
+        os.environ["KALIEDO_BROWSER_PATH"] = "/usr/bin/chromium"
         pio.kaleido.scope.default_format = "png"
         pio.kaleido.scope.default_width = 800
         pio.kaleido.scope.default_height = 600
