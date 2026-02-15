@@ -643,6 +643,39 @@ Este relatório apresenta gráficos e análises detalhadas para apoiar decisões
 
                     # Se for gráfico horizontal (caso do gráfico de visitas)
                     if hasattr(trace1, "orientation") and trace1.orientation == "h":
+                        # Identificar qual trace é Nacional e qual é Internacional
+                        if "Nacional" in trace1.name:
+                        nacional = trace1
+                        internacional = trace2
+                    else:
+                        nacional = trace2
+                        internacional = trace1
+
+                    # Ordenar do maior para o menor (baseado em visitas nacionais)
+                    categorias = list(nacional.y)
+                    valores_nac = list(nacional.x)
+                    valores_int = list(internacional.x)
+
+                    dados = sorted(zip(categorias, valores_nac, valores_int),
+                                   key=lambda x: x[1],
+                                   reverse=True)
+
+                    categorias, valores_nac, valores_int = zip(*dados)
+
+                    pos = np.arange(len(categorias))
+                    largura = 0.35
+
+                    # Azul = Nacional
+                    plt.barh(pos - largura/2, valores_nac, largura,
+                             label="Visitas Nacionais", color="#1C4D86")
+
+                    # Laranja = Internacional
+                    plt.barh(pos + largura/2, valores_int, largura,
+                             label="Visitas Internacionais", color="#F5A623")
+
+                    plt.yticks(pos, categorias)
+
+                        
                         categorias = trace1.y
                         pos = np.arange(len(categorias))
 
