@@ -130,10 +130,8 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
-
-st.sidebar.markdown("---")
-st.sidebar.image(".png", use_container_width=True)
-
+logo_path = os.path.join(BASE_DIR, "logo.png")
+st.sidebar.image(logo_path, use_container_width=True)
 
 # ---------- BARRA LATERAL ----------
 
