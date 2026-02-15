@@ -654,33 +654,33 @@ Este relatório apresenta gráficos e análises detalhadas para apoiar decisões
                         plt.yticks(pos, categorias)
 
                    # Caso seja vertical (empregos e estabelecimentos)
-                   else:
-                       categorias = trace1.x
-                       pos = np.arange(len(categorias))
+                    else:
+                        categorias = trace1.x
+                        pos = np.arange(len(categorias))
 
-                       plt.bar(pos - largura/2, trace1.y, largura,
-                               label=trace1.name if trace1.name else "")
-                       plt.bar(pos + largura/2, trace2.y, largura,
-                               label=trace2.name if trace2.name else "")
+                        plt.bar(pos - largura/2, trace1.y, largura,
+                                label=trace1.name if trace1.name else "")
+                        plt.bar(pos + largura/2, trace2.y, largura,
+                                label=trace2.name if trace2.name else "")
 
-                       plt.xticks(pos, categorias)
+                        plt.xticks(pos, categorias)
 
-                     plt.legend()
+                      plt.legend()
 
-                 plt.xticks(rotation=45)
-                 plt.tight_layout()
-                 plt.savefig(tmp.name, dpi=300)
-                 plt.close()
+                  plt.xticks(rotation=45)
+                  plt.tight_layout()
+                  plt.savefig(tmp.name, dpi=300)
+                  plt.close()
 
-                 story.append(Image(tmp.name, width=5*inch, height=3.5*inch))
-                 story.append(Spacer(1, 6))
+                  story.append(Image(tmp.name, width=5*inch, height=3.5*inch))
+                  story.append(Spacer(1, 6))
 
-             except Exception as e:
-                 story.append(Paragraph(f"Erro ao gerar gráfico: {e}", styles["Normal"]))
+              except Exception as e:
+                  story.append(Paragraph(f"Erro ao gerar gráfico: {e}", styles["Normal"]))
 
-             if descricao:
-                 story.append(Paragraph(descricao, styles["Normal"]))
-                 story.append(Spacer(1, 6))
+              if descricao:
+                  story.append(Paragraph(descricao, styles["Normal"]))
+                  story.append(Spacer(1, 6))
 
 
         
