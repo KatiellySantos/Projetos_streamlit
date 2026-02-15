@@ -152,18 +152,14 @@ df_filtrado = df[
 ].copy()
 
 logo_path = os.path.join(BASE_DIR, ".png")
+col1, col2, col3 = st.sidebar.columns([1,2,1])
 
+with col2:
+    st.image(logo_path, width=120)
 
 st.sidebar.image(logo_path, width=80)
 
-st.sidebar.markdown(
-    f"""
-    <div style="text-align: center; margin-top: 10px;">
-        <img src="{logo_path}" width="80">
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+
 
 # ---------- FUNÇÃO KPI ----------
 
