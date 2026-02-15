@@ -3,6 +3,7 @@
 Aplicação interativa para análise de indicadores econômicos e turísticos do Brasil, com geração automatizada de relatório em PDF.
 
 O sistema permite explorar dados por Estado, Município e Região Turística, oferecendo uma visão consolidada de empregos, estabelecimentos, visitas e arrecadação.
+---
 
 🎯 Objetivo
 Disponibilizar uma visualização estruturada dos principais indicadores do turismo brasileiro, permitindo:
@@ -22,7 +23,7 @@ Disponibilizar uma visualização estruturada dos principais indicadores do turi
     - Texto analítico dinâmico
     - Data e horário de geração
 
-🛠️ Tecnologias Utilizadas
+## 🛠️ Tecnologias Utilizadas
 - Python
 - Streamlit
 - Pandas
@@ -31,10 +32,11 @@ Disponibilizar uma visualização estruturada dos principais indicadores do turi
 - Matplotlib
 
 📂 Estrutura do Projeto
-    📁 projeto
+``` 📁 projeto
     │-- app.py
     │-- planilha.xlsx
     │-- mapa.json
     │-- PNG
     │-- requirements.txt
+```
 
