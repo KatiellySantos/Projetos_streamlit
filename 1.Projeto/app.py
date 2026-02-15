@@ -152,6 +152,10 @@ df_filtrado = df[
 ].copy()
 
 logo_path = os.path.join(BASE_DIR, ".png")
+
+
+st.sidebar.image(logo_path, width=80)
+
 st.sidebar.markdown(
     f"""
     <div style="text-align: center; margin-top: 10px;">
