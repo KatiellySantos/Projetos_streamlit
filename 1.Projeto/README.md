@@ -17,10 +17,10 @@ Disponibilizar uma visualização estruturada dos principais indicadores do turi
 - Gráficos interativos de comparação
 - Mapa coroplético por município
 - Geração automática de relatório contendo:
-    Indicadores consolidados
-    Gráficos exportados
-    Texto analítico dinâmico
-    Data e horário de geração
+    - Indicadores consolidados
+    - Gráficos exportados
+    - Texto analítico dinâmico
+    - Data e horário de geração
 
 🛠️ Tecnologias Utilizadas
 - Python
@@ -31,10 +31,10 @@ Disponibilizar uma visualização estruturada dos principais indicadores do turi
 - Matplotlib
 
 📂 Estrutura do Projeto
-         📁 projeto
-         │-- app.py
-         │-- planilha.xlsx
-         │-- mapa.json
-         │-- logo.png
-         │-- IBGE.png
+            📁 projeto
+            │-- app.py
+            │-- planilha.xlsx
+            │-- mapa.json
+            │-- logo.png
+            │-- IBGE.png
 
