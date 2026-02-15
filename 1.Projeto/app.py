@@ -152,8 +152,7 @@ df_filtrado = df[
 ].copy()
 
 logo_path = os.path.join(BASE_DIR, ".png")
-col1, col2, col3 = st.sidebar.columns([1,4,2])
-
+col1, col2, col3 = st.sidebar.columns([1,4,3])
 
 with col2:
     st.image(logo_path, width=120)
