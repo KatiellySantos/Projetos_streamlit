@@ -13,7 +13,7 @@ Disponibilizar uma visualização estruturada dos principais indicadores do turi
 - Consolidação de indicadores estratégicos
 - Exportação de relatório analítico em PDF
 
-🚀 Funcionalidades
+## 🚀 Funcionalidades
 - Filtros dinâmicos por localização
 - KPIs atualizados em tempo real
 - Gráficos interativos de comparação
@@ -32,7 +32,7 @@ Disponibilizar uma visualização estruturada dos principais indicadores do turi
 - ReportLab
 - Matplotlib
 
-📂 Estrutura do Projeto
+## 📂 Estrutura do Projeto
 ```
 📁 projeto
     │-- app.py
